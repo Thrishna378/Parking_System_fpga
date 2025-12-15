@@ -1,0 +1,44 @@
+`timescale 1ns / 1ps
+module parking_system_top(
+    input clk,          // 100 MHz clock
+    input entry,        // entry button
+    input exit,         // exit button
+    input rst,          // reset button
+    output [3:0] led,   // LED0-LED3
+    output [6:0] seg,   // 7-segment segments
+    output [3:0] an     // 7-segment enable
+);
+
+    wire [2:0] count;
+    wire [1:0] digit;
+
+    // Clock divider for 7-seg multiplexing
+    clock_divider CD (
+        .clk(clk),
+        .digit(digit)
+    );
+
+    // Parking counter
+    parking_counter PC (
+        .clk(clk),
+        .rst(rst),
+        .entry(entry),
+        .exit(exit),
+        .count(count)
+    );
+
+    // LED logic
+    led_logic LL (
+        .count(count),
+        .led(led)
+    );
+
+    // 7-segment display logic
+    seven_seg_display SSD (
+        .count(count),
+        .digit(digit),
+        .seg(seg),
+        .an(an)
+    );
+
+endmodule
