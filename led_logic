@@ -1,0 +1,14 @@
+module led_logic(
+    input [2:0] count,
+    output reg [3:0] led
+);
+
+    always @(*) begin
+        led = 4'b0000;
+        if (count > 0) led[0] = 1;
+        if (count > 1) led[1] = 1;
+        if (count > 2) led[2] = 1;
+        if (count > 3) led[3] = 1;
+    end
+
+endmodule
