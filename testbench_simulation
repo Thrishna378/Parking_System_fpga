@@ -1,0 +1,79 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 15.12.2025 09:48:39
+// Design Name: 
+// Module Name: parking_system_tb
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+`timescale 1ns / 1ps
+
+module parking_system_tb;
+
+    reg clk;
+    reg entry;
+    reg exit;
+    reg rst;
+
+    wire [3:0] led;
+    wire [6:0] seg;
+    wire [3:0] an;
+
+    // DUT
+    parking_system_top DUT (
+        .clk(clk),
+        .entry(entry),
+        .exit(exit),
+        .rst(rst),
+        .led(led),
+        .seg(seg),
+        .an(an)
+    );
+
+    // Clock generation (100 MHz)
+    always #5 clk = ~clk;
+
+    initial begin
+        clk = 0;
+        rst = 1;
+        entry = 0;
+        exit = 0;
+
+        #20 rst = 0;        // release reset
+
+        // car entry
+        #20 entry = 1;
+        #10 entry = 0;
+
+        #20 entry = 1;
+        #10 entry = 0;
+
+        #20 entry = 1;
+        #10 entry = 0;
+
+        #20 entry = 1;
+        #10 entry = 0;     // FULL
+
+        // car exit
+        #40 exit = 1;
+        #10 exit = 0;
+
+        #100 $stop;
+    end
+
+endmodule
+
